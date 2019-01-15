@@ -1,38 +1,65 @@
-import paho.mqtt.client as mqtt
-import json
- 
-class Client(mqtt.Client):
+import paho.mqtt.client as paho_mqtt
+            
+class Devices(object):
+      def __init__(self):
+        pass
+        
+      class Relay(object):
+         _global_id_number = None
+         
+         def __init__(self, alias):
+            Devices.Relay._global_id_number = alias
+            
+         class States(object):
+            def __init__(self):
+                self.__topic = "node/{0}/relay/0:0/state/set".format(Devices.Relay._global_id_number)
+            
+            @property
+            def true(self):
+               return [self.__topic, "true"]
+                            
+            @property
+            def false(self):
+                return [self.__topic, "false"]
 
-   class Devices(object):
-      def relay(self, id_number):
-         return "node/{0}/relay/-/state/set".format(id_number)
+      class Led_strip(object):
+         _global_id_number = None
+         
+         def __init__(self, alias):
+            Devices.Led_strip._global_id_number = alias
 
-      def ledstrip_color(self, id_number):
-         return "node/{0}/led-strip/-/color/set".format(id_number)
+         class Colors(object):
+            def __init__(self):
+               self.__topic = "node/{0}/led-strip/-/color/set".format(Devices.Led_strip._global_id_number)
 
-   class Colors(object):
+            @property
+            def red(self):
+               return [self.__topic, '"#ff0000"']
 
-      @property
-      def red(self):
-         return '{color: "#ff0000"}'
+            @property
+            def blue(self):
+               return [self.__topic, '"#0000ff"']
 
-      @property
-      def blue(self):
-         return '{color: "#0000ff"}'
+            @property
+            def green(self):
+               return [self.__topic, '"#00ff00"']
 
-      @property
-      def green(self):
-         return '{color: "#00ff00"}'
+               
 
-   class States(object):
-      
-      @property
-      def true(self):
-         return '{state: "true"}'
+         class Effects(object):
+            def __init__(self):
+               self.__topic = "node/{0}/led-strip/-/effect/set".format(Devices.Led_strip._global_id_number)
+
+            @property
+            def rainbow(self):
+               return [self.__topic, '{"type":"rainbow", "wait":50}']
+
+            
+
+class Client(paho_mqtt.Client):
    
-      @property
-      def false(self):
-         return '{state: "false"}'
-   
-   def publish_device(self, device, payload):
-         self.publish(device, payload)
+   def publish_device(self, device_and_value):
+      self.publish(device_and_value[0], device_and_value[1])
+
+   class Device(Devices):
+      pass
