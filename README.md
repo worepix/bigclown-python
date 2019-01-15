@@ -7,13 +7,17 @@ BigClown libary for Python
 
 ```
 from bigclown import mqtt
+import time
 
-bc_mqtt = mqtt.Client()
-bc_mqtt.connect("localhost")
-bc_mqtt.publish_device(bc_mqtt.Devices().relay(0), bc_mqtt.States().false)
+bc_mqtt.publish_device(bc_mqtt.Device().Relay("power-controller:0").States().false)
+time.sleep(2)
+bc_mqtt.publish_device(bc_mqtt.Device().Relay("power-controller:0").States().true)
+bc_mqtt.publish_device(bc_mqtt.Device().Led_strip("power-controller:0").Colors().blue)
+time.sleep(2)
+bc_mqtt.publish_device(bc_mqtt.Device().Led_strip("power-controller:0").Effects().rainbow)
 ```
 
-This example will connect you to the mqtt broker and send MQTT message to turn off [BigClown Relay Module](https://shop.bigclown.com/relay-module/).
+This example will connect you to the mqtt broker and send MQTT message to turn off and on [BigClown Relay Module](https://shop.bigclown.com/relay-module/). Then it will change to blue color and turn on rainbow effect on [BigClown Power Module](https://shop.bigclown.com/power-module/)
 
 ### IFTTT
 ```
