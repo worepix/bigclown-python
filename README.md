@@ -8,9 +8,11 @@ BigClown libary for Python
 ```
 from bigclown import mqtt
 
-bc_mqtt = mqtt.Client()
-bc_mqtt.connect("localhost")
-bc_mqtt.publish_device(bc_mqtt.Devices().relay(0), bc_mqtt.States().false)
+@mqtt.Sub.Climate_Monitor.temperature("climate-monitor:0")
+def callback_climate_monitor(msg):
+    print("Climate: %s" % str(msg.payload, "utf-8"))
+
+mqtt.loop()
 ```
 
 This example will connect you to the mqtt broker and send MQTT message to turn off [BigClown Relay Module](https://shop.bigclown.com/relay-module/).
@@ -19,8 +21,8 @@ This example will connect you to the mqtt broker and send MQTT message to turn o
 ```
 from bigclown import ifttt
 
-bc_ifttt = ifttt.key("your_key")
-print(bc_ifttt.send("name_event"))
+ifttt.send("your_key", "event_name")
+
 ```
 
 With ifttt module you are able to invoke event via WebHooks same as in [Node-RED](https://www.bigclown.com/doc/projects/radio-push-button/). This example will print status code of ifttt request.

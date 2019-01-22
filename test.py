@@ -1,21 +1,18 @@
-from bigclown import mqtt
-import time
+from bigclown import mqtt, ifttt
 
-bc_mqtt = mqtt.Client()
-bc_mqtt.connect("localhost")
-#bc_mqtt.publish("test_topic", "test_payload")
-#bc_mqtt.publish("test", "neco")
-#bc_mqtt.publish_device("helo")
+@mqtt.Sub.Climate_Monitor.temperature("climate-monitor:0")
+def callback_climate_monitor(msg):
+    print("Climate: %s" % str(msg.payload, "utf-8"))
+    request = ifttt.send("Your ID", "Event")
 
-#bc_mqtt.publish_device(bc_mqtt.Devices().relay(0), bc_mqtt.States().false)
+    if (request == 200):
+        print("Sended via IFTTTT")
 
-bc_mqtt.publish_device(bc_mqtt.Device().Relay("power-controller:0").States().false)
-time.sleep(2)
-bc_mqtt.publish_device(bc_mqtt.Device().Relay("power-controller:0").States().true)
-time.sleep(2)
-bc_mqtt.publish_device(bc_mqtt.Device().Led_strip("power-controller:0").Colors().blue)
-time.sleep(2)
-bc_mqtt.publish_device(bc_mqtt.Device().Led_strip("power-controller:0").Effects().rainbow)
+    else:
+        print("Something went wrong")
 
-#bc_ifttt = ifttt.key("your_key")
-#print(bc_ifttt.send("name_request"))
+@mqtt.Sub("#")
+def callback_all(msg):
+    print("Vsechno: %s" % str(msg.payload, "utf-8"))
+
+mqtt.loop()
