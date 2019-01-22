@@ -15,7 +15,7 @@ def callback_climate_monitor(msg):
 mqtt.loop()
 ```
 
-This example will connect you to the mqtt broker and send MQTT message to turn off [BigClown Relay Module](https://shop.bigclown.com/relay-module/).
+This example will connect you to the mqtt broker and send MQTT message to turn off and on [BigClown Relay Module](https://shop.bigclown.com/relay-module/). Then it will change to blue color and turn on rainbow effect on [BigClown Power Module](https://shop.bigclown.com/power-module/)
 
 ### IFTTT
 ```
