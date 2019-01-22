@@ -3,9 +3,9 @@ import webcolors
 
 connection = paho_mqtt.Client()
 connection.connect("localhost")
-connection.subscribe("node/#")
+connection.subscribe("#")
 
-class Sub(object):
+class Subscribe(object):
 
    def __init__(self, topic = None):
       self.__topic = topic
@@ -25,7 +25,7 @@ class Sub(object):
       @staticmethod
       def temperature(alias):
          def inner(func):
-            @Sub("node/{0}/thermometer/0:0/temperature".format(alias))
+            @Subscribe("node/{0}/thermometer/0:0/temperature".format(alias))
             def respond(msg):
                func(msg)
             return respond
@@ -34,7 +34,7 @@ class Sub(object):
       @staticmethod
       def illuminance(alias):
          def inner(func):
-            @Sub("node/{0}/lux-meter/0:0/illuminance".format(alias))
+            @Subscribe("node/{0}/lux-meter/0:0/illuminance".format(alias))
             def respond(msg):
                func(msg)
             return respond
@@ -43,7 +43,7 @@ class Sub(object):
       @staticmethod
       def relative_humidity(alias):
          def inner(func):
-            @Sub("node/{0}/hygrometer/0:4/relative-humidity".format(alias))
+            @Subscribe("node/{0}/hygrometer/0:4/relative-humidity".format(alias))
             def respond(msg):
                func(msg)
             return respond

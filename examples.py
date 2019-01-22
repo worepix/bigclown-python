@@ -1,6 +1,6 @@
 from bigclown import mqtt, ifttt
 
-@mqtt.Sub.Climate_Monitor.temperature("climate-monitor:0")
+@mqtt.Subscribe.Climate_Monitor.temperature("climate-monitor:0")
 def callback_climate_monitor(msg):
     print("Climate: %s" % str(msg.payload, "utf-8"))
     request = ifttt.send("Your ID", "Event")
@@ -11,7 +11,7 @@ def callback_climate_monitor(msg):
     else:
         print("Something went wrong")
 
-@mqtt.Sub("#")
+@mqtt.Subscribe("#")
 def callback_all(msg):
     print("Vsechno: %s" % str(msg.payload, "utf-8"))
 
