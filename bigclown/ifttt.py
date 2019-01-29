@@ -1,9 +1,9 @@
 import requests
 
-def send(key, event, data = None):
+class Client(object):
     
-    '''
-    Allow you to send event web request with event name. Function returns request status code (200 is ok).
-    '''
+    def __init__(self, key):
+        self._key = key
 
-    return requests.post("https://maker.ifttt.com/trigger/{0}/with/key/{1}".format(event, key), data).status_code
+    def send(self, event_name, payload = None):
+        return requests.post("https://maker.ifttt.com/trigger/{0}/with/key/{1}".format(event_name, self._key), payload).status_code

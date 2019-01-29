@@ -5,27 +5,56 @@ BigClown libary for Python
 
 ### MQTT
 
+#### Subscibe
+
 ```
-from bigclown import mqtt
+import bigclown.mqtt
 
-@mqtt.Sub.Climate_Monitor.temperature("climate-monitor:0")
-def callback_climate_monitor(msg):
-    print("Climate: %s" % str(msg.payload, "utf-8"))
+bc_mqtt = bigclown.mqtt.Client()
 
-mqtt.loop()
+@bc_mqtt.subscribe("#")
+def callback(msg):
+    print(msg.topic)
+    print(str(msg.payload, "utf-8"))
 ```
 
-This example will connect you to the mqtt broker and send MQTT message to turn off and on [BigClown Relay Module](https://shop.bigclown.com/relay-module/). Then it will change to blue color and turn on rainbow effect on [BigClown Power Module](https://shop.bigclown.com/power-module/)
+This example will connect you to the mqtt broker and subscribe all topics. Everytime when message come, it will call callback. When callback takes some time and in the same time new message come, queu is made and callback are processed one by one. You can process callback in paralal and no queu is made. So then for every callback is made another threading. You can do it by setting queu to False:
+
+```
+import bigclown.mqtt
+
+bc_mqtt = bigclown.mqtt.Client()
+bc_mqtt.queu = False
+
+@bc_mqtt.subscribe("#")
+def callback(msg):
+    print(msg.topic)
+    print(str(msg.payload, "utf-8"))
+```
+
+#### Publish
+
+```
+import bigclown.mqtt
+
+bc_mqtt = bigclown.mqtt.Client()
+
+bc_mqtt.publish("topic", "payload")
+```
+
+This example will publish topic "topic" and payload "payload".
 
 ### IFTTT
 ```
-from bigclown import ifttt
+import bigclown.ifttt
 
-ifttt.send("your_key", "event_name")
+bc_ifttt = bigclown.ifttt.Client("key")
+
+print(bc_ifttt.send("event_name"))
 
 ```
 
-With ifttt module you are able to invoke event via WebHooks same as in [Node-RED](https://www.bigclown.com/doc/projects/radio-push-button/). This example will print status code of ifttt request.
+With ifttt module you are able to invoke event via WebHooks same as in [Node-RED](https://www.bigclown.com/doc/projects/radio-push-button/). This example will print [status code](https://www.restapitutorial.com/httpstatuscodes.html) of ifttt request. So 200 is succeed for example.
 
 ## Install
 
