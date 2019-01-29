@@ -24,7 +24,7 @@ This example will connect you to the mqtt broker and subscribe all topics. Every
 import bigclown.mqtt
 
 bc_mqtt = bigclown.mqtt.Client()
-bc_mqtt.queu = False
+bc_mqtt.callback_queu = False
 
 @bc_mqtt.subscribe("#")
 def callback(msg):
