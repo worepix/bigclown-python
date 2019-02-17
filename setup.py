@@ -8,11 +8,13 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 with open('requirements.txt', 'r') as f:
     requirements = f.read()
+    
+packages = ['bigclown']
 
 setup(
     name='bigclown',
-    packages=find_packages('bigclown'),
-    package_dir={'': 'bigclown'},
+    packages=packages,
+    package_dir={'bigclown': 'bigclown'},
     include_package_data=True,
     version='@@VERSION@@',
     description='Python libary for Python',
